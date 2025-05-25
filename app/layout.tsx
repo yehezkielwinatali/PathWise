@@ -16,9 +16,11 @@ import { dark } from "@clerk/themes";
 import { Toaster } from "sonner";
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Pathwise",
-  description: "AI Career Coach Webiste By Pathwise",
+  icons: {
+    icon: "/plogo.jpg", // or "/your-icon.png"
+  },
 };
 
 export default function RootLayout({
