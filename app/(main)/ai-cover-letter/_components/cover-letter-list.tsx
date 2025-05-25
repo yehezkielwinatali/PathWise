@@ -24,7 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { deleteCoverLetter } from "@/actions/cover-letter";
-import { CoverLetter } from "@prisma/client";
+import { CoverLetter } from "@/lib/generated/prisma";
 interface Props {
   coverLetters: CoverLetter[];
 }
