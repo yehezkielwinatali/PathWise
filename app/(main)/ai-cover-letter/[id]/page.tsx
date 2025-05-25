@@ -8,8 +8,7 @@ type PageProps = {
   params: { id: string };
 };
 const CoverLetter = async ({ params }: PageProps) => {
-  const { id } = params;
-  const coverLetter = await getCoverLetter(id);
+  const coverLetter = await getCoverLetter(params.id);
   return (
     <div className="container mx-auto py-2">
       <div className="flex flex-col space-y-2">
