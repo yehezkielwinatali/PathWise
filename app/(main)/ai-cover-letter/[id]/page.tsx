@@ -4,11 +4,10 @@ import Link from "next/link";
 import React from "react";
 import CoverLetterPreview from "../_components/cover-letter-preview";
 import { getCoverLetter } from "@/actions/cover-letter";
-type PageProps = {
-  params: { id: string };
-};
-const CoverLetter = async ({ params }: PageProps) => {
-  const coverLetter = await getCoverLetter(params.id);
+
+const CoverLetter = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params;
+  const coverLetter = await getCoverLetter(id);
   return (
     <div className="container mx-auto py-2">
       <div className="flex flex-col space-y-2">
