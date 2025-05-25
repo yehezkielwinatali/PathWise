@@ -6,7 +6,7 @@ import CoverLetterPreview from "../_components/cover-letter-preview";
 import { getCoverLetter } from "@/actions/cover-letter";
 
 const CoverLetter = async ({ params }: { params: { id: string } }) => {
-  const { id } = await params;
+  const { id } = params;
   const coverLetter = await getCoverLetter(id);
   return (
     <div className="container mx-auto py-2">
