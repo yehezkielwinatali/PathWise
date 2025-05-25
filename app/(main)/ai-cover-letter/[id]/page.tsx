@@ -4,8 +4,10 @@ import Link from "next/link";
 import React from "react";
 import CoverLetterPreview from "../_components/cover-letter-preview";
 import { getCoverLetter } from "@/actions/cover-letter";
-
-const CoverLetter = async ({ params }: { params: { id: string } }) => {
+type PageProps = {
+  params: { id: string };
+};
+const CoverLetter = async ({ params }: PageProps) => {
   const { id } = params;
   const coverLetter = await getCoverLetter(id);
   return (
