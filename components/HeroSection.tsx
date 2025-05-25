@@ -44,13 +44,17 @@ const HeroSection = () => {
           transition={{ delay: 0.9, duration: 0.5 }}
         >
           <Link href={"/dashboard"}>
-            <Button size={"lg"} className="px-8">
+            <Button size={"lg"} className="px-8 cursor-pointer">
               Take the First Step
             </Button>
           </Link>
-          <Link href={"/dashboard"}>
-            <Button size={"lg"} className="px-8" variant={"outline"}>
-              Take the First Step
+          <Link href={"/"}>
+            <Button
+              size={"lg"}
+              className="px-8 cursor-pointer"
+              variant={"outline"}
+            >
+              Stay Where You Are
             </Button>
           </Link>
         </motion.div>

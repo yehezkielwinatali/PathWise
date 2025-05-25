@@ -1,6 +1,7 @@
 import { getResume } from "@/actions/resume";
 import React from "react";
 import ResumeBuilder from "./_components/resume-builder";
+import { IndustryInsight } from "@/type";
 
 const ResumePage = async () => {
   const resume = await getResume();

@@ -1,5 +1,13 @@
 "use client";
 
+import { IndustryInsight } from "@/type";
+
+interface ResumeBuilderProps {
+  initialContent: string | IndustryInsight | undefined;
+}
+
+type PreviewType = "preview" | "edit" | undefined;
+
 import { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,12 +33,13 @@ import { entriesToMarkdown } from "@/lib/helper";
 import { resumeSchema } from "@/lib/schema";
 import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 
-export default function ResumeBuilder({ initialContent }) {
+export default function ResumeBuilder({ initialContent }: ResumeBuilderProps) {
   const [activeTab, setActiveTab] = useState("edit");
-  const [previewContent, setPreviewContent] = useState(initialContent);
+  const [previewContent, setPreviewContent] = useState<string>(
+    typeof initialContent === "string" ? initialContent : ""
+  );
   const { user } = useUser();
-  const [resumeMode, setResumeMode] = useState("preview");
-
+  const [resumeMode, setResumeMode] = useState<PreviewType>("preview");
   const {
     control,
     register,
@@ -60,14 +69,18 @@ export default function ResumeBuilder({ initialContent }) {
   const formValues = watch();
 
   useEffect(() => {
-    if (initialContent) setActiveTab("preview");
+    // Whenever initialContent changes (like after page load), update previewContent
+    if (typeof initialContent === "string") {
+      setPreviewContent(initialContent);
+    }
   }, [initialContent]);
 
-  // Update preview content when form values change
   useEffect(() => {
     if (activeTab === "edit") {
       const newContent = getCombinedContent();
-      setPreviewContent(newContent ? newContent : initialContent);
+      if (newContent) {
+        setPreviewContent(newContent);
+      }
     }
   }, [formValues, activeTab]);
 
@@ -90,9 +103,12 @@ export default function ResumeBuilder({ initialContent }) {
       parts.push(`💼 [LinkedIn](${contactInfo.linkedin})`);
     if (contactInfo.twitter) parts.push(`🐦 [Twitter](${contactInfo.twitter})`);
 
-    return parts.length > 0
-      ? `## <div align="center">${user.fullName}</div>
-        \n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
+    // Safely get user's full name or fallback to empty string
+    const fullName = user?.fullName || "";
+
+    return parts.length > 0 && fullName
+      ? `## <div align="center">${fullName}</div>
+      \n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
       : "";
   };
 
@@ -132,7 +148,7 @@ export default function ResumeBuilder({ initialContent }) {
     }
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       const formattedContent = previewContent
         .replace(/\n/g, "\n")
@@ -156,7 +172,7 @@ export default function ResumeBuilder({ initialContent }) {
           <Button
             variant="destructive"
             onClick={handleSubmit(onSubmit)}
-            disabled={isSaving}
+            disabled={!!isSaving}
             className="cursor-pointer"
           >
             {isSaving ? (
@@ -213,7 +229,6 @@ export default function ResumeBuilder({ initialContent }) {
                     {...register("contactInfo.email")}
                     type="email"
                     placeholder="your@email.com"
-                    error={errors.contactInfo?.email}
                   />
                   {errors.contactInfo?.email && (
                     <p className="text-sm text-red-500">
@@ -276,7 +291,6 @@ export default function ResumeBuilder({ initialContent }) {
                     {...field}
                     className="h-32"
                     placeholder="Write a compelling professional summary..."
-                    error={errors.summary}
                   />
                 )}
               />
@@ -296,7 +310,6 @@ export default function ResumeBuilder({ initialContent }) {
                     {...field}
                     className="h-32"
                     placeholder="List your key skills..."
-                    error={errors.skills}
                   />
                 )}
               />
@@ -402,14 +415,13 @@ export default function ResumeBuilder({ initialContent }) {
               </span>
             </div>
           )}
-          <div className="border rounded-lg">
-            <MDEditor
-              value={previewContent}
-              onChange={setPreviewContent}
-              height={800}
-              preview={resumeMode}
-            />
-          </div>
+          <MDEditor
+            value={previewContent}
+            onChange={(value) => setPreviewContent(value ?? "")}
+            height={800}
+            preview={resumeMode}
+          />
+
           <div className="hidden">
             <div id="resume-pdf">
               <MDEditor.Markdown

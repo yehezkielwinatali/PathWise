@@ -110,7 +110,7 @@ const Quiz = () => {
           </p>
         </CardContent>
         <CardFooter>
-          <Button className="w-full" onClick={generateQuizFn}>
+          <Button className="w-full cursor-pointer" onClick={generateQuizFn}>
             Start Quiz
           </Button>
         </CardFooter>
