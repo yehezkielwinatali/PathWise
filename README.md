@@ -11,7 +11,7 @@ Pathwise is a full-stack Next.js 14 application built to help users streamline j
 - 🧠 **AI-Generated Insights** for Industry Trends and Skills
 - 📊 **Assessments** with Smart Feedback
 - 🔁 **Scheduled AI Updates** using Inngest
-- 🛠 **PostgreSQL + Prisma ORM**
+- 🛠 **Supabase + Prisma ORM**
 - 🌐 **Server Actions & App Router (Next.js 14)**
 
 ---
